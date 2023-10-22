@@ -21,7 +21,9 @@ module Processor (
     logic [ 6:0] opcode;
     logic [ 2:0] func3;
     logic [ 6:0] func7;
+    logic [31:0] addr;
     logic [31:0] wdata;
+    logic [31:0] rdata;
     logic [31:0] rdata1;
     logic [31:0] rdata2;
     logic [ 3:0] aluop;
@@ -31,9 +33,14 @@ module Processor (
     logic [31:0] mux_out_pc;
     logic [31:0] mux_out_opr_a;
     logic [31:0] mux_out_opr_b;
+    logic [ 2:0] br_type;
+    logic        br_taken;
+    logic        rd_en;
+    logic        wr_en;
+    logic [ 2:0] mem_type;
 
     // pc selection mux
-    assign mux_out_pc = sel_pc ? wdata : (pc_out + 32'd4);
+    assign mux_out_pc = sel_pc ? opr_res : (pc_out + 32'd4);
 
 
 
@@ -41,7 +48,7 @@ module Processor (
     (
         .clk    ( clk            ),
         .rst    ( rst            ),
-        .pc_in  ( pc_out + 32'd4 ),
+        .pc_in  ( mux_out_pc     ),
         .pc_out ( pc_out         )
     );
 
@@ -79,23 +86,28 @@ module Processor (
     controller controller_i
     (
         .opcode    ( opcode         ),
-        .func7    ( func7           ),
-        .func3    ( func3           ),
+        .func7     ( func7          ),
+        .func3     ( func3          ),
         .rf_en     ( rf_en          ),
         .sel_opr_a ( sel_opr_a      ),
         .sel_opr_b ( sel_opr_b      ),
         .sel_pc    ( sel_pc         ),
         .sel_wb    ( sel_wb         ),
         .imm_type  ( imm_type       ),
-        .aluop     ( aluop          )
+        .aluop     ( aluop          ),
+        .br_type   ( br_type        ),
+        .br_taken  ( br_taken       ),
+        .rd_en     ( rd_en          ),
+        .wr_en     ( wr_en          ),
+        .mem_type  ( mem_type       )
     );
 
      alu alu_i
     (
-        .aluop   ( aluop          ),
-        .opr_a   ( mux_out_opr_a  ),
-        .opr_b   ( mux_out_opr_b  ),
-        .opr_res ( opr_res        )
+        .aluop    ( aluop          ),
+        .opr_a    ( mux_out_opr_a  ),
+        .opr_b    ( mux_out_opr_b  ),
+        .opr_res  ( opr_res        )
     );
 
 
@@ -105,6 +117,26 @@ module Processor (
         .inst      ( inst           ),
         .imm_type  ( imm_type       ),
         .imm       ( imm            )
+    );
+
+    Branch_comp Branch_comp_i
+    (
+        .br_type   ( br_type        ),
+        .opr_a     ( mux_out_opr_a  ),
+        .opr_b     ( mux_out_opr_b  ),
+        .br_taken  ( br_taken       )
+    );
+
+
+    data_mem data_mem_i
+    (
+        .clk       ( clk            ),
+        .rd_en     ( rd_en          ),
+        .wr_en     ( wr_en          ),
+        .mem_type  ( mem_type       ),
+        .addr      ( opr_res        ),
+        .wdata     ( rdata2         ),
+        .rdata     ( rdata          )
     );
 
     // operand a selection mux
@@ -117,6 +149,7 @@ module Processor (
     begin
         case(sel_wb)
             2'b00: wdata = opr_res;
+            2'b01: wdata = rdata;
             2'b10: wdata = pc_out + 32'd4;
             2'b11: wdata = 32'd0;
         endcase
