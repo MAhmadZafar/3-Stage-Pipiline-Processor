@@ -77,12 +77,11 @@ module controller
 
                 case (func3)
                     3'b000: aluop = 4'b0000;             //ADDI
-                    3'b001: aluop = 4'b0001;             //SUBI
-                    3'b010: aluop = 4'b0010;             //SLLI
-                    3'b011: aluop = 4'b0011;             //SLTI
-                    3'b100: aluop = 4'b0100;             //SLTUI
-                    3'b101: aluop = 4'b0101;             //XORI
-                    3'b110:
+                    3'b001: aluop = 4'b0010;             //SLLI
+                    3'b010: aluop = 4'b0011;             //SLTI
+                    3'b011: aluop = 4'b0100;             //SLTUI
+                    3'b100: aluop = 4'b0101;             //XORI
+                    3'b101:
                     begin
                         case (func7)
                             7'b0000000: aluop = 4'b0110; //SRL
