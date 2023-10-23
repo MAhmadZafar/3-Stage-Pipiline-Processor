@@ -231,10 +231,10 @@ module controller
                 aluop = 4'b0000; // add-U
             end
             // B-Type
-            7'b1100011: // U-Type
+            7'b1100011:
             begin
                 // memory controls
-                rf_en = 1'b1;
+                rf_en = 1'b0;
                 rd_en = 1'b0;
                 wr_en = 1'b0;
 

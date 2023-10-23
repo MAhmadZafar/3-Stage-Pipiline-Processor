@@ -1,5 +1,5 @@
 # vsim -c -voptargs="+acc" tb_processor -do "run -all" 
-# Start time: 02:46:24 on Oct 23,2023
+# Start time: 13:19:24 on Oct 23,2023
 # ** Note: (vsim-8009) Loading existing optimized design _opt
 # //  Questa Sim-64
 # //  Version 2021.1 win64 Jan 19 2021
@@ -30,5 +30,5 @@
 # run -all
 # ** Note: $finish    : tb_processor.sv(27)
 #    Time: 1010 ns  Iteration: 0  Instance: /tb_processor
-# End time: 02:46:33 on Oct 23,2023, Elapsed time: 0:00:09
+# End time: 13:19:34 on Oct 23,2023, Elapsed time: 0:00:10
 # Errors: 0, Warnings: 0
