@@ -57,6 +57,10 @@ R0
 R0
 R0
 R0
+R0
+R0
+R0
+R0
 !s11f MIXED_VERSIONS
 13
 !s112 1.1
@@ -66,19 +70,18 @@ R0
 cModel Technology
 Z1 dC:/Users/hp/Desktop/Processor
 T_opt
-!s110 1698050237
-VCMj3Jah<L9e8?_YB=fVY01
+!s110 1701682182
+Va]P@BIPXDgDLm5l5i7Io[3
 04 12 4 work tb_processor fast 0
-=1-48ba4e45768d-653630bc-166-4064
+=1-48ba4e45768d-656d9c05-33b-1b158
 !s124 OEM100
 o-quiet -auto_acc_if_foreign -work work +acc
 Z2 tCvgOpt 0
 n@_opt
 OL;O;2021.1;73
-R1
 valu
 Z3 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
-Z4 !s110 1698050649
+Z4 !s110 1701682165
 !i10b 1
 !s100 h<PMF=UBb5dQL08=`[d7d0
 IkOo09UD6iCRHW_2BkRDH^0
@@ -87,18 +90,18 @@ R1
 w1698013668
 8alu.sv
 Falu.sv
-!i122 149
+!i122 165
 L0 1 41
 Z5 VDg1SIo80bB@j0V0VzS_@n1
 Z6 OL;L;2021.1;73
 r1
 !s85 0
 31
-Z7 !s108 1698050649.000000
-!s107 tb_processor.sv|reg_file.sv|Processor.sv|PC.sv|inst_mem.sv|inst_decode.sv|imm_gen.sv|data_mem.sv|controller.sv|Branch_comp.sv|alu.sv|
-Z8 !s90 alu.sv|Branch_comp.sv|controller.sv|data_mem.sv|imm_gen.sv|inst_decode.sv|inst_mem.sv|PC.sv|Processor.sv|reg_file.sv|tb_processor.sv|
+Z7 !s108 1701682164.000000
+Z8 !s107 tb_processor.sv|reg_file.sv|Processor.sv|PC.sv|inst_mem.sv|inst_decode.sv|imm_gen.sv|data_mem.sv|csr_reg.sv|controller.sv|Branch_comp.sv|alu.sv|
+Z9 !s90 alu.sv|Branch_comp.sv|controller.sv|csr_reg.sv|data_mem.sv|imm_gen.sv|inst_decode.sv|inst_mem.sv|PC.sv|Processor.sv|reg_file.sv|tb_processor.sv|
 !i113 0
-Z9 o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z10 o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
 R2
 vBranch_comp
 R3
@@ -111,7 +114,7 @@ R1
 w1697999732
 8Branch_comp.sv
 FBranch_comp.sv
-!i122 149
+!i122 165
 L0 1 28
 R5
 R6
@@ -119,35 +122,59 @@ r1
 !s85 0
 31
 R7
-Z10 !s107 tb_processor.sv|reg_file.sv|Processor.sv|PC.sv|inst_mem.sv|inst_decode.sv|imm_gen.sv|data_mem.sv|controller.sv|Branch_comp.sv|alu.sv|
 R8
-!i113 0
 R9
+!i113 0
+R10
 R2
 n@branch_comp
 vcontroller
 R3
 R4
 !i10b 1
-!s100 Hdd8`UagnzdF`]UTTKiN33
-IFB9:8zeNkdJX;74hKZEMk2
+!s100 CeT_dH7N>ieP6HnSdzORd3
+IFKR@kzRS9boQKVAF1P2Bm1
 S1
 R1
-w1698050107
+w1701681234
 8controller.sv
 Fcontroller.sv
-!i122 149
-L0 1 281
+!i122 165
+L0 1 322
 R5
 R6
 r1
 !s85 0
 31
 R7
-R10
 R8
-!i113 0
 R9
+!i113 0
+R10
+R2
+vcsr_reg
+R3
+R4
+!i10b 1
+!s100 j6T[1Z]HddXoDW>UgQ6k>3
+IZL9@N>?=RC;jUk4O4fzPj1
+S1
+R1
+w1701678738
+8csr_reg.sv
+Fcsr_reg.sv
+!i122 165
+L0 1 69
+R5
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
 R2
 vdata_mem
 R3
@@ -160,7 +187,7 @@ R1
 w1698010913
 8data_mem.sv
 Fdata_mem.sv
-!i122 149
+!i122 165
 L0 1 80
 R5
 R6
@@ -168,10 +195,10 @@ r1
 !s85 0
 31
 R7
-R10
 R8
-!i113 0
 R9
+!i113 0
+R10
 R2
 vimm_gen
 R3
@@ -184,7 +211,7 @@ R1
 w1698013518
 8imm_gen.sv
 Fimm_gen.sv
-!i122 149
+!i122 165
 L0 1 34
 R5
 R6
@@ -192,10 +219,10 @@ r1
 !s85 0
 31
 R7
-R10
 R8
-!i113 0
 R9
+!i113 0
+R10
 R2
 vinst_decode
 R3
@@ -208,7 +235,7 @@ R1
 w1696788380
 8inst_decode.sv
 Finst_decode.sv
-!i122 149
+!i122 165
 L0 1 20
 R5
 R6
@@ -216,10 +243,10 @@ r1
 !s85 0
 31
 R7
-R10
 R8
-!i113 0
 R9
+!i113 0
+R10
 R2
 vinst_mem
 R3
@@ -232,7 +259,7 @@ R1
 w1696788716
 8inst_mem.sv
 Finst_mem.sv
-!i122 149
+!i122 165
 L0 1 12
 R5
 R6
@@ -240,10 +267,10 @@ r1
 !s85 0
 31
 R7
-R10
 R8
-!i113 0
 R9
+!i113 0
+R10
 R2
 vPC
 R3
@@ -256,7 +283,7 @@ R1
 w1696693954
 8PC.sv
 FPC.sv
-!i122 149
+!i122 165
 L0 3 21
 R5
 R6
@@ -264,35 +291,35 @@ r1
 !s85 0
 31
 R7
-R10
 R8
-!i113 0
 R9
+!i113 0
+R10
 R2
 n@p@c
 vProcessor
 R3
 R4
 !i10b 1
-!s100 b4:0?<^IN_2k<M=9acmJ03
-ISX8o9@5H6W=LjlHMmoR]02
+!s100 e_c;QWNDl5U6=U`hgL1Ba0
+I0<j5]g[A45_]G>@5jE5e82
 S1
 R1
-w1698049073
+w1701681528
 8Processor.sv
 FProcessor.sv
-!i122 149
-L0 1 158
+!i122 165
+L0 1 189
 R5
 R6
 r1
 !s85 0
 31
 R7
-R10
 R8
-!i113 0
 R9
+!i113 0
+R10
 R2
 n@processor
 vreg_file
@@ -306,7 +333,7 @@ R1
 w1698047174
 8reg_file.sv
 Freg_file.sv
-!i122 149
+!i122 165
 L0 1 33
 R5
 R6
@@ -314,32 +341,32 @@ r1
 !s85 0
 31
 R7
-R10
 R8
-!i113 0
 R9
+!i113 0
+R10
 R2
 vtb_processor
 R3
 R4
 !i10b 1
-!s100 hVBKdDgzk9d:5ASS<2JGG0
-I[?UA=JY;SV`^[a6<bG2aQ3
+!s100 kN]Yeaz=Szj;l:KCaVE2z3
+IA9fi1_`k_ze=;eM5OH:5V0
 S1
 R1
-w1696853031
+w1701682159
 8tb_processor.sv
 Ftb_processor.sv
-!i122 149
-L0 1 48
+!i122 165
+L0 1 51
 R5
 R6
 r1
 !s85 0
 31
 R7
-R10
 R8
-!i113 0
 R9
+!i113 0
+R10
 R2

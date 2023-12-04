@@ -30,6 +30,7 @@ module Processor (
     logic [31:0] imm;
     logic [31:0] opr_res;
 
+    //csr
     logic [31:0] mux_out_pc;
     logic [31:0] mux_out_opr_a;
     logic [31:0] mux_out_opr_b;
@@ -38,6 +39,15 @@ module Processor (
     logic        rd_en;
     logic        wr_en;
     logic [ 2:0] mem_type;
+
+    logic        timer_interrupt;
+    logic        csr_rd;
+    logic        csr_wr;
+    logic [31:0] csr_rdata;
+    logic [31:0] epc;
+    logic        is_mret;
+    logic        epc_taken;
+    logic [31:0] epc_pc;
 
     // pc selection mux
     assign mux_out_pc = sel_pc ? opr_res : (pc_out + 32'd4);
@@ -99,7 +109,10 @@ module Processor (
         .br_taken  ( br_taken       ),
         .rd_en     ( rd_en          ),
         .wr_en     ( wr_en          ),
-        .mem_type  ( mem_type       )
+        .mem_type  ( mem_type       ),
+        .csr_rd    ( csr_rd         ),
+        .csr_wr    ( csr_wr         ),
+        .is_mret   ( is_mret        )
     );
 
      alu alu_i
@@ -137,6 +150,24 @@ module Processor (
         .addr      ( opr_res        ),
         .wdata     ( rdata2         ),
         .rdata     ( rdata          )
+    );
+
+     // csr 
+    csr_reg csr_reg_i
+    (
+        .clk       ( clk             ),
+        .rst       ( rst             ),
+        .addr      ( imm             ),
+        .wdata     ( rdata1          ),
+        .pc        ( pc_out          ),
+        .trap      ( timer_interrupt ),
+        .csr_rd    ( csr_rd          ),
+        .csr_wr    ( csr_wr          ),
+        .is_mret   ( is_mret         ),
+        .inst      ( inst            ),
+        .rdata     ( csr_rdata       ),
+        .epc       ( epc             ),
+        .epc_taken ( epc_taken       )
     );
 
     // operand a selection mux

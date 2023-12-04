@@ -14,7 +14,10 @@ module controller
     output logic [2:0]   br_type,
     output logic [2:0]  mem_type,
     output logic [1:0]    sel_wb,
-    output logic [2:0]  imm_type
+    output logic [2:0]  imm_type,
+    output logic          csr_rd,   // control signal to read from csr register file
+    output logic          csr_wr,   // control signal to write to csr register
+    output logic          is_mret   // control signal for 'mret' instruction --- 1 will indicate that the inst is mret
 );
     always_comb
     begin
@@ -258,6 +261,41 @@ module controller
                 3'b111: br_type = 3'b101;
                 endcase
             end
+            7'b1110011: // CSRRW
+            begin
+                case (func3)
+                3'b000: // MRET
+                    begin
+                        rf_en        = 1'b0;
+                        sel_opr_a    = 1'b1;
+                        sel_opr_b    = 1'b0;
+                        rd_en        = 1'b0;
+                        sel_wb       = 2'b11;
+                        wr_en        = 1'b0;
+
+
+                        csr_rd       = 1'b0;
+                        csr_wr       = 1'b0;
+                        is_mret      = 1'b1;
+                    end
+
+                default:
+                    begin
+                        rf_en        = 1'b0;
+                        sel_opr_a    = 1'b1;
+                        sel_opr_b    = 1'b0;
+                        rd_en        = 1'b0;
+                        sel_wb       = 2'b01;
+                        wr_en        = 1'b0;
+
+
+                        csr_rd       = 1'b1;
+                        csr_wr       = 1'b1;
+                        is_mret      = 1'b0;
+                    end
+                endcase
+            end
+
             default:
             begin
                  // memory controls
@@ -273,6 +311,10 @@ module controller
 
                 // immediate controls
                 imm_type  = 3'b000;
+                csr_rd       = 1'b0;
+                csr_wr       = 1'b0;
+                is_mret      = 1'b0;
+                
             end
         endcase
     end
