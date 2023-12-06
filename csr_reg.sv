@@ -2,52 +2,22 @@ module csr_reg
 (
     input  logic         clk,
     input  logic         rst,
-
     input  logic [31: 0] addr,
     input  logic [31: 0] wdata, // data from rs1
     input  logic [31: 0] pc,
-    
-    
     input  logic         trap_handle,   // Input Interupt Signal
     input  logic         csr_rd, // control signal for read
     input  logic         csr_wr, // control signal for write
     input  logic         is_mret, // control signal for MRET inst
     input  logic [31: 0] inst,
-
-
     output logic [31: 0] rdata,
     output logic [31: 0] epc,
     output logic         epc_taken // it's a flag which is fed to the mux right before PC
-    
-
 );
-    // logic [31: 0] mstatus;
-    // logic [31: 0] mie;
-    // logic [31: 0] mepc;
-    // logic [31: 0] mip; mtip 7 mtie 7 mstatus 3
 
     logic [31: 0] csr_mem [4];
     logic [31:0] mcause = 32'b0;
     logic [31:0] mtvec = 32'b0;;
-
-
-    // always_comb 
-    // begin
-    //     if (trap_handle) 
-    //     begin
-    //         // csr_mem[2]    = pc;
-    //         // csr_mem[0][3] = 1'b1;
-    //         // csr_mem[1][7] = 1'b1;
-    //         // csr_mem[3][7] = 1'b1;
-    //     end 
-    //     else
-    //     begin
-    //         // csr_mem[2]    = 32'b0;
-    //         // csr_mem[0][3] = 1'b0;
-    //         // csr_mem[1][7] = 1'b0;
-    //         // csr_mem[3][7] = 1'b0;
-    //     end
-    // end
 
     always_comb
     begin
@@ -93,7 +63,7 @@ module csr_reg
         end
 
     // synchronous write
-    always_ff @(posedge clk)
+    always_ff @(negedge clk)
         begin
             if (csr_wr)
             begin
@@ -106,7 +76,7 @@ module csr_reg
             end
             else
             begin
-                if(is_mret & trap_handle)
+                if(is_mret)
                     begin
                         csr_mem[2] <= pc;
                     end
