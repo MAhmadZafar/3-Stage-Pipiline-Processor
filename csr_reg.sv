@@ -105,7 +105,7 @@ module csr_reg
             end
             else
             begin
-                if(is_mret)
+                if(is_mret & trap_handel)
                     begin
                         csr_mem[2] <= pc;
                     end

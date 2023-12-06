@@ -3,9 +3,10 @@ module timer (
     input  logic rst,
     output logic timer_interrupt
 );
-    parameter TIMER_LIMIT = 50000; // clock frequency
+    parameter TIMER_LIMIT = 2; // clock frequency
 
     reg [31:0] timer_counter;
+    logic single_cycle = 1'b1;
     
     always @(posedge clk or posedge rst)
     begin
@@ -16,10 +17,11 @@ module timer (
         else
         begin
             timer_counter <= timer_counter + 1;
-            if (timer_counter == TIMER_LIMIT)
+            if (timer_counter == TIMER_LIMIT & single_cycle)
             begin
                 timer_counter <= 0;
                 timer_interrupt <= 1;
+                single_cycle = 1'b0;
             end
             else
             begin

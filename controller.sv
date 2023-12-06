@@ -283,7 +283,7 @@ module controller
                         //csr reg
                         csr_rd       = 1'b1;
                         csr_wr       = 1'b1;
-                        // is_mret      = 1'b0;
+                        is_mret      = 1'b0;
                     end
 
                 default:
