@@ -30,7 +30,7 @@ module Processor (
     logic [31:0] imm;
     logic [31:0] opr_res;
 
-    //csr
+   //pc control signal
     logic [31:0] mux_out_pc;
     logic [31:0] mux_out_opr_a;
     logic [31:0] mux_out_opr_b;
@@ -40,6 +40,7 @@ module Processor (
     logic        wr_en;
     logic [ 2:0] mem_type;
 
+    //csr
     logic        timer_interrupt;
     logic        csr_rd;
     logic        csr_wr;
@@ -47,10 +48,22 @@ module Processor (
     logic [31:0] epc;
     logic        is_mret;
     logic        epc_taken;
-    logic [31:0] epc_pc;
+
+
 
     // pc selection mux
-    assign mux_out_pc = sel_pc ? opr_res : (pc_out + 32'd4);
+    always_comb 
+    begin 
+    if (epc_taken)
+        begin
+            mux_out_pc= epc;
+        end
+        else
+            begin
+                mux_out_pc = sel_pc ? opr_res : (pc_out + 32'd4);
+            end
+        
+    end
 
 
 
@@ -157,10 +170,10 @@ module Processor (
     (
         .clk       ( clk             ),
         .rst       ( rst             ),
-        .addr      ( imm             ),
+        .addr      ( opr_res         ),
         .wdata     ( rdata1          ),
         .pc        ( pc_out          ),
-        .trap      ( timer_interrupt ),
+        .trap_handel( timer_interrupt ),
         .csr_rd    ( csr_rd          ),
         .csr_wr    ( csr_wr          ),
         .is_mret   ( is_mret         ),
@@ -168,6 +181,12 @@ module Processor (
         .rdata     ( csr_rdata       ),
         .epc       ( epc             ),
         .epc_taken ( epc_taken       )
+    );
+
+    timer timer_i(
+        .clk                     (clk),
+        .rst                     (rst),
+        .timer_interrupt(timer_interrupt)
     );
 
     // operand a selection mux
@@ -182,7 +201,11 @@ module Processor (
             2'b00: wdata = opr_res;
             2'b01: wdata = rdata;
             2'b10: wdata = pc_out + 32'd4;
-            2'b11: wdata = 32'd0;
+            2'b11: wdata = csr_rdata;
+            default:
+            begin
+                wdata = 32'b0;
+            end
         endcase
     end
 

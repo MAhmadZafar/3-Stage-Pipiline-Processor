@@ -11,10 +11,10 @@ module data_mem
 
 	logic [31:0] data_mem [31:0];  //2D Array
 	
-	//Instantiating the data memory
-	initial begin 
-		$readmemb("d_m.mem", data_mem);
-	end
+	// //Instantiating the data memory
+	// initial begin 
+	// 	$readmemb("d_m.mem", data_mem);
+	// end
 
     always_ff @(posedge clk)
     begin  
@@ -71,10 +71,10 @@ module data_mem
         end
     end  
 
-    final
-    begin
-        $writememb("d_m.mem", dut.data_mem_i.data_mem);
-    end
+    // final
+    // begin
+    //     $writememb("d_m.mem", dut.data_mem_i.data_mem);
+    // end
 
 	
 endmodule

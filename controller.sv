@@ -261,37 +261,51 @@ module controller
                 3'b111: br_type = 3'b101;
                 endcase
             end
-            7'b1110011: // CSRRW
+            7'b1110011: // CSR
             begin
                 case (func3)
-                3'b000: // MRET
+                3'b000: // CSRRW
                     begin
-                        rf_en        = 1'b0;
-                        sel_opr_a    = 1'b1;
-                        sel_opr_b    = 1'b0;
-                        rd_en        = 1'b0;
-                        sel_wb       = 2'b11;
-                        wr_en        = 1'b0;
+                        // csr memory controls
+                        rf_en = 1'b1;
+                        rd_en = 1'b0;
+                        wr_en = 1'b0;
 
+                        // csr mux controls
+                        sel_opr_a = 1'b0;
+                        sel_opr_b = 1'b1;
+                        sel_pc    = 1'b0;
+                        sel_wb    = 2'b11;
 
-                        csr_rd       = 1'b0;
-                        csr_wr       = 1'b0;
-                        is_mret      = 1'b1;
+                        // csr immediate controls
+                        imm_type  = 3'b000;
+
+                        //csr reg
+                        csr_rd       = 1'b1;
+                        csr_wr       = 1'b1;
+                        // is_mret      = 1'b0;
                     end
 
                 default:
                     begin
-                        rf_en        = 1'b0;
-                        sel_opr_a    = 1'b1;
-                        sel_opr_b    = 1'b0;
-                        rd_en        = 1'b0;
-                        sel_wb       = 2'b01;
-                        wr_en        = 1'b0;
+                        // csr memory controls
+                        rf_en = 1'b1;
+                        rd_en = 1'b0;
+                        wr_en = 1'b0;
 
+                        // csr mux controls
+                        sel_opr_a = 1'b0;
+                        sel_opr_b = 1'b1;
+                        sel_pc    = 1'b0;
+                        sel_wb    = 2'b11;
 
-                        csr_rd       = 1'b1;
-                        csr_wr       = 1'b1;
-                        is_mret      = 1'b0;
+                        // csr immediate controls
+                        imm_type  = 3'b000;
+                        
+                        // csr reg
+                        csr_rd       = 1'b0;
+                        csr_wr       = 1'b0;
+                        is_mret      = 1'b1;
                     end
                 endcase
             end
@@ -299,7 +313,7 @@ module controller
             default:
             begin
                  // memory controls
-                rf_en = 1'b0;
+                rf_en = 1'b1;
                 rd_en = 1'b0;
                 wr_en = 1'b0;
 
@@ -311,9 +325,11 @@ module controller
 
                 // immediate controls
                 imm_type  = 3'b000;
+
+                //csr reg
                 csr_rd       = 1'b0;
                 csr_wr       = 1'b0;
-                is_mret      = 1'b0;
+                // is_mret      = 1'b0;
                 
             end
         endcase
