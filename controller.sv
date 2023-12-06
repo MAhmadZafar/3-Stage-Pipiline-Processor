@@ -284,12 +284,13 @@ module controller
                         csr_rd       = 1'b1;
                         csr_wr       = 1'b1;
                         is_mret      = 1'b0;
+                        aluop        = 4'b1010;
                     end
 
                 default:
                     begin
                         // csr memory controls
-                        rf_en = 1'b1;
+                        rf_en = 1'b0;
                         rd_en = 1'b0;
                         wr_en = 1'b0;
 
@@ -313,7 +314,7 @@ module controller
             default:
             begin
                  // memory controls
-                rf_en = 1'b1;
+                rf_en = 1'b0;
                 rd_en = 1'b0;
                 wr_en = 1'b0;
 

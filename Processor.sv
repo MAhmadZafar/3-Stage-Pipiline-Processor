@@ -41,13 +41,16 @@ module Processor (
     logic [ 2:0] mem_type;
 
     //csr
-    logic        timer_interrupt;
+    logic        timer_interupt;
     logic        csr_rd;
     logic        csr_wr;
     logic [31:0] csr_rdata;
     logic [31:0] epc;
     logic        is_mret;
     logic        epc_taken;
+
+
+
 
 
 
@@ -173,7 +176,7 @@ module Processor (
         .addr      ( opr_res         ),
         .wdata     ( rdata1          ),
         .pc        ( pc_out          ),
-        .trap_handel( timer_interrupt ),
+        .trap_handle( timer_interupt ),
         .csr_rd    ( csr_rd          ),
         .csr_wr    ( csr_wr          ),
         .is_mret   ( is_mret         ),
@@ -186,7 +189,7 @@ module Processor (
     timer timer_i(
         .clk                     (clk),
         .rst                     (rst),
-        .timer_interrupt(timer_interrupt)
+        .timer_interupt(timer_interupt)
     );
 
     // operand a selection mux

@@ -1,7 +1,7 @@
 module timer (
     input  logic clk,
     input  logic rst,
-    output logic timer_interrupt
+    output logic timer_interupt
 );
     parameter TIMER_LIMIT = 2; // clock frequency
 
@@ -20,12 +20,12 @@ module timer (
             if (timer_counter == TIMER_LIMIT & single_cycle)
             begin
                 timer_counter <= 0;
-                timer_interrupt <= 1;
+                timer_interupt <= 1;
                 single_cycle = 1'b0;
             end
             else
             begin
-                timer_interrupt <= 0;
+                timer_interupt <= 0;
             end
         end
     end

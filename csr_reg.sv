@@ -8,7 +8,7 @@ module csr_reg
     input  logic [31: 0] pc,
     
     
-    input  logic         trap_handel,   // Input Interupt Signal
+    input  logic         trap_handle,   // Input Interupt Signal
     input  logic         csr_rd, // control signal for read
     input  logic         csr_wr, // control signal for write
     input  logic         is_mret, // control signal for MRET inst
@@ -33,7 +33,7 @@ module csr_reg
 
     // always_comb 
     // begin
-    //     if (trap_handel) 
+    //     if (trap_handle) 
     //     begin
     //         // csr_mem[2]    = pc;
     //         // csr_mem[0][3] = 1'b1;
@@ -51,7 +51,7 @@ module csr_reg
 
     always_comb
     begin
-        if (trap_handel & csr_mem[0][3] & csr_mem[1][7] & csr_mem[3][7]) 
+        if (trap_handle & csr_mem[0][3] & csr_mem[1][7] & csr_mem[3][7]) 
             begin
                 epc_taken = 1'b1;
             end
@@ -70,11 +70,12 @@ module csr_reg
                     32'h00000304: rdata = csr_mem[1]; // mie
                     32'h00000341: rdata = csr_mem[2]; // mepc
                     32'h00000344: rdata = csr_mem[3]; // mip
+
+                    default
+                    begin
+                        rdata = 32'b0;
+                    end
                 endcase
-            end
-            else
-            begin
-                rdata = 32'b0;
             end
         end
 
@@ -105,7 +106,7 @@ module csr_reg
             end
             else
             begin
-                if(is_mret & trap_handel)
+                if(is_mret & trap_handle)
                     begin
                         csr_mem[2] <= pc;
                     end
