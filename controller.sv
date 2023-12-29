@@ -27,13 +27,9 @@ module controller
                 rf_en = 1'b1;
                 rd_en = 1'b0;
                 wr_en = 1'b0;
-                
-                // mux Ctrls
                 sel_opr_a = 1'b0;
                 sel_opr_b = 1'b0;
                 sel_wb    = 2'b00;
-
-                // imm ctrls
                 imm_type  = 3'b000;
                 br_type   = 3'b110;
 
@@ -108,20 +104,14 @@ module controller
             // S-type
             7'b0100011: // S-type
             begin
-                // mem ctrls
                 rf_en = 1'b0;
                 rd_en = 1'b0;
                 wr_en = 1'b1;
-
-                // mux Ctrls
                 sel_opr_a = 1'b0;
                 sel_opr_b = 1'b1;
                 sel_wb    = 2'b11;
-
-                // imm ctrls
                 imm_type  = 3'b100;
 
-                // op ctrls
                 aluop = 4'b0000; // add
                 case (func3)
                 3'b000: mem_type = 3'b000;
