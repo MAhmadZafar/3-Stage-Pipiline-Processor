@@ -17,7 +17,8 @@ module csr_reg
 
     logic [31: 0] csr_mem [4];
     logic [31:0] mcause = 32'b0;
-    logic [31:0] mtvec = 32'b0;;
+    logic [31:0] mtvec = 32'b0;
+    logic sig =1'b1;
 
     always_comb
     begin
@@ -76,9 +77,10 @@ module csr_reg
             end
             else
             begin
-                if(is_mret)
+                if( trap_handle & sig)
                     begin
                         csr_mem[2] <= pc;
+                        sig <= 1'b0;
                     end
             end
         end

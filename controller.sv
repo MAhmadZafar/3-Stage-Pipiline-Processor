@@ -1,6 +1,5 @@
 module controller
 (
-    input  logic        br_taken,
     input  logic [6:0]    opcode,
     input  logic [6:0]     func7,
     input  logic [2:0]     func3,
@@ -9,16 +8,16 @@ module controller
     output logic           wr_en,
     output logic       sel_opr_a,
     output logic       sel_opr_b,
-    output logic          sel_pc,
     output logic [3:0]     aluop,
     output logic [2:0]   br_type,
     output logic [2:0]  mem_type,
     output logic [1:0]    sel_wb,
     output logic [2:0]  imm_type,
-    output logic          csr_rd,   // control signal to read from csr register file
-    output logic          csr_wr,   // control signal to write to csr register
-    output logic          is_mret   // control signal for 'mret' instruction --- 1 will indicate that the inst is mret
+    output logic          csr_rd,   // Ctrl signal for read
+    output logic          csr_wr,   // Ctrl signal for write
+    output logic          is_mret   // Ctrl signal for 'mret' instruction 
 );
+ 
     always_comb
     begin
         case(opcode)
@@ -29,15 +28,14 @@ module controller
                 rd_en = 1'b0;
                 wr_en = 1'b0;
                 
-                // mux controls
+                // mux Ctrls
                 sel_opr_a = 1'b0;
                 sel_opr_b = 1'b0;
-                sel_pc    = 1'b0;
                 sel_wb    = 2'b00;
 
-                // immediate controls
+                // imm ctrls
                 imm_type  = 3'b000;
-
+                br_type   = 3'b110;
 
                 case(func3)
                     3'b000: 
@@ -68,13 +66,9 @@ module controller
                 rf_en = 1'b1;
                 rd_en = 1'b0;
                 wr_en = 1'b0;
-                // mux controls
                 sel_opr_a = 1'b0;
                 sel_opr_b = 1'b1;
-                sel_pc    = 1'b0;
                 sel_wb    = 2'b00;
-
-                // immediate controls
                 imm_type  = 3'b000;
 
 
@@ -101,41 +95,33 @@ module controller
             // I-Type Jump
             7'b1100111:
             begin
-                // memory controls
                 rf_en = 1'b1;
                 rd_en = 1'b0;
                 wr_en = 1'b0;
-                
-                // mux controls
                 sel_opr_a = 1'b0;
                 sel_opr_b = 1'b1;
-                sel_pc    = 1'b1;
                 sel_wb    = 2'b10;
-
-                // immediate controls
                 imm_type  = 3'b000;
-
-                // operation controls
                 aluop = 4'b0000; // add
+                br_type = 3'b111;  
             end
             // S-type
             7'b0100011: // S-type
             begin
-                // memory controls
+                // mem ctrls
                 rf_en = 1'b0;
                 rd_en = 1'b0;
                 wr_en = 1'b1;
 
-                // mux controls
+                // mux Ctrls
                 sel_opr_a = 1'b0;
                 sel_opr_b = 1'b1;
-                sel_pc    = 1'b0;
                 sel_wb    = 2'b11;
 
-                // immediate controls
+                // imm ctrls
                 imm_type  = 3'b100;
 
-                // operation controls
+                // op ctrls
                 aluop = 4'b0000; // add
                 case (func3)
                 3'b000: mem_type = 3'b000;
@@ -147,22 +133,17 @@ module controller
             // L-type
             7'b0000011: // L-type
             begin
-                // memory controls
+               
                 rf_en = 1'b1;
                 rd_en = 1'b1;
                 wr_en = 1'b0;
-
-                // mux controls
                 sel_opr_a = 1'b0;
                 sel_opr_b = 1'b1;
-                sel_pc    = 1'b0;
                 sel_wb    = 2'b01;
-
-                // immediate controls
                 imm_type  = 3'b000;
-
-                // operation controls
                 aluop = 4'b0000; // add
+
+
                 case (func3)
                 3'b000: mem_type = 3'b000;
                 3'b001: mem_type = 3'b001;
@@ -176,81 +157,50 @@ module controller
             // J-Type
             7'b1101111: // J-Type
             begin
-                // memory controls
                 rf_en = 1'b1;
                 rd_en = 1'b0;
                 wr_en = 1'b0;
-
-                // mux controls
                 sel_opr_a = 1'b1;
                 sel_opr_b = 1'b1;
-                sel_pc    = 1'b1;
                 sel_wb    = 2'b10;
-
-                // immediate controls
                 imm_type  = 3'b001;
-
-                // operation controls
                 aluop = 4'b0000; // add
+                br_type = 3'b111;
             end
             // LUI-Type
             7'b0110111: // U-Type
             begin
-                // memory controls
                 rf_en = 1'b1;
                 rd_en = 1'b0;
                 wr_en = 1'b0;
-
-                // mux controls
                 sel_opr_a = 1'b0;
                 sel_opr_b = 1'b1;
-                sel_pc    = 1'b0;
                 sel_wb    = 2'b00;
-
-                // immediate controls
                 imm_type  = 3'b010;
 
-                // operation controls
                 aluop = 4'b1010; // add-U
             end
             // AUIPC-Type
             7'b0010111: // U-Type
             begin
-                // memory controls
                 rf_en = 1'b1;
                 rd_en = 1'b0;
                 wr_en = 1'b0;
-
-                // mux controls
                 sel_opr_a = 1'b1;
                 sel_opr_b = 1'b1;
-                sel_pc    = 1'b0;
                 sel_wb    = 2'b00;
-
-                // immediate controls
                 imm_type  = 3'b010;
-
-                // operation controls
                 aluop = 4'b0000; // add-U
             end
             // B-Type
             7'b1100011:
             begin
-                // memory controls
                 rf_en = 1'b0;
                 rd_en = 1'b0;
                 wr_en = 1'b0;
-
-                // mux controls
                 sel_opr_a = 1'b1;
                 sel_opr_b = 1'b1;
-                sel_pc =  br_taken ? 1'b1 : 1'b0;
-                sel_wb    = 2'b11;
-
-                // immediate controls
                 imm_type  = 3'b011;
-
-                // operation controls
                 aluop = 4'b0000;
                 case (func3)
                 3'b000: br_type = 3'b000;
@@ -266,21 +216,13 @@ module controller
                 case (func3)
                 3'b000: // CSRRW
                     begin
-                        // csr memory controls
                         rf_en = 1'b1;
                         rd_en = 1'b0;
                         wr_en = 1'b0;
-
-                        // csr mux controls
                         sel_opr_a = 1'b0;
                         sel_opr_b = 1'b1;
-                        sel_pc    = 1'b0;
                         sel_wb    = 2'b11;
-
-                        // csr immediate controls
                         imm_type  = 3'b000;
-
-                        //csr reg
                         csr_rd       = 1'b1;
                         csr_wr       = 1'b1;
                         is_mret      = 1'b0;
@@ -289,21 +231,13 @@ module controller
 
                 default:
                     begin
-                        // csr memory controls
                         rf_en = 1'b0;
                         rd_en = 1'b0;
                         wr_en = 1'b0;
-
-                        // csr mux controls
                         sel_opr_a = 1'b0;
                         sel_opr_b = 1'b1;
-                        sel_pc    = 1'b0;
                         sel_wb    = 2'b11;
-
-                        // csr immediate controls
                         imm_type  = 3'b000;
-                        
-                        // csr reg
                         csr_rd       = 1'b0;
                         csr_wr       = 1'b0;
                         is_mret      = 1'b1;
@@ -313,24 +247,15 @@ module controller
 
             default:
             begin
-                 // memory controls
                 rf_en = 1'b0;
                 rd_en = 1'b0;
                 wr_en = 1'b0;
-
-                // mux controls
                 sel_opr_a = 1'b0;
                 sel_opr_b = 1'b0;
-                sel_pc    = 1'b0;
                 sel_wb    = 2'b00;
-
-                // immediate controls
                 imm_type  = 3'b000;
-
-                //csr reg
                 csr_rd       = 1'b0;
                 csr_wr       = 1'b0;
-                // is_mret      = 1'b0;
                 
             end
         endcase

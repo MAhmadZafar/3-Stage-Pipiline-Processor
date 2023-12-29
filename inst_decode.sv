@@ -15,6 +15,13 @@ module inst_decode (
     // TO REGISTER FILE
     assign rd      = inst[ 11:7];
     assign rs1     = inst[19:15];
-    assign rs2     = inst[24:20];
+    
+    always_comb 
+    begin
+        if ((opcode == 7'b0110011) || (opcode == 7'b0100011) || (opcode == 7'b1100011))
+        begin
+            rs2     = inst[24:20];
+        end    
+    end
     
 endmodule

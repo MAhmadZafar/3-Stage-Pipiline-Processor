@@ -20,6 +20,8 @@ begin
         br_taken = 1'b1;
     else if ((br_type == 3'b101) && (opr_a) >= (opr_b))
         br_taken = 1'b1;
+    else if (br_type == 3'b111)
+        br_taken = 1'b1;
     else
         br_taken = 1'b0;
         
