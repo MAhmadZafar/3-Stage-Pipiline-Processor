@@ -2,7 +2,7 @@
 
 ## Description
 
-This project implements a RISC-V pipeline processor with an innovative three-stage design. The stages include Instruction Fetch, combined Decode and Execute, and combined Memory and Writeback. This design efficiently manages instruction processing while handling hazards and maintaining Control and Status Registers (CSRs). The processor includes a Hazard Detection Unit for resolving data and control hazards, crucial in pipelined architectures.
+This project implements a RISC-V pipeline processor with an innovative three-stage design. The stages include Instruction Fetch, combined Decode and Execute, and combined Memory and Writeback. This design efficiently manages instruction processing while handling hazards and maintaining Control and Status Registers (CSRs). The processor includes a Hazard Detection Unit for resolving data and control hazards, crucial in pipelined architectures. It also contains Timer Interupt Handeling. It consist of a timer unit that generates timer interupt.Support for all the 6 Basic ISA instructions are implemented with complete pipelining.
 
 ## Features
 
@@ -25,3 +25,7 @@ This project implements a RISC-V pipeline processor with an innovative three-sta
 - reg_file.sv: Register File managing the set of processor registers.
 - tb_processor.sv: Testbench for Processor used for simulation and verification.
 - timer_interrupt.sv: Timer Interrupt for handling timing and interrupt operations.
+
+## Comments
+
+- I have made a mem.txt file that contains all the basic instruction that you can execute and check and I have also placed a Factorial Function for hazard evaluation.
